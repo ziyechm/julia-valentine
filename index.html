@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Voor Julia 💘</title>
+  <meta name="description" content="Een klein valentijns-momentje voor Julia." />
+  <style>
+    :root{
+      --bg1:#0b1020;
+      --bg2:#1a0b2e;
+      --card: rgba(255,255,255,.08);
+      --stroke: rgba(255,255,255,.16);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --hot:#ff4d8d;
+      --hot2:#ff7a59;
+      --ok:#47d7ac;
+      --shadow: 0 20px 70px rgba(0,0,0,.45);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      overflow:hidden;
+      background: radial-gradient(1200px 800px at 20% 15%, rgba(255,77,141,.28), transparent 55%),
+                  radial-gradient(1100px 900px at 80% 20%, rgba(255,122,89,.22), transparent 58%),
+                  radial-gradient(1200px 900px at 50% 95%, rgba(71,215,172,.18), transparent 60%),
+                  linear-gradient(160deg, var(--bg1), var(--bg2));
+    }
+
+    /* floating hearts background */
+    .hearts{position:fixed; inset:0; pointer-events:none; overflow:hidden}
+    .heart{
+      position:absolute;
+      width:14px; height:14px;
+      transform: rotate(45deg);
+      opacity:.0;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,.35));
+      animation: floatUp linear infinite;
+    }
+    .heart::before,.heart::after{
+      content:"";
+      position:absolute;
+      width:14px; height:14px;
+      border-radius:50%;
+      background: currentColor;
+    }
+    .heart{background: currentColor; border-radius:3px}
+    .heart::before{left:-7px}
+    .heart::after{top:-7px}
+    @keyframes floatUp{
+      0%{transform: translateY(18vh) translateX(0) rotate(45deg) scale(.9); opacity:0}
+      10%{opacity:.55}
+      70%{opacity:.45}
+      100%{transform: translateY(-130vh) translateX(var(--drift)) rotate(45deg) scale(var(--s)); opacity:0}
+    }
+
+    .wrap{
+      position:relative;
+      height:100%;
+      display:grid;
+      place-items:center;
+      padding: 24px;
+    }
+    .card{
+      width:min(760px, 100%);
+      background: var(--card);
+      border:1px solid var(--stroke);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      overflow:hidden;
+      position:relative;
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: conic-gradient(from 180deg, rgba(255,77,141,.55), rgba(71,215,172,.35), rgba(255,122,89,.45), rgba(255,77,141,.55));
+      filter: blur(18px);
+      opacity:.35;
+      z-index:0;
+    }
+    .inner{
+      position:relative;
+      z-index:1;
+      padding: 28px 26px 26px;
+    }
+    header{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .dot{
+      width:9px; height:9px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #fff, var(--hot));
+      box-shadow: 0 0 0 4px rgba(255,77,141,.14);
+    }
+    h1{
+      margin: 14px 0 6px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height:1.08;
+      letter-spacing:-.6px;
+    }
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height:1.45;
+      transform: translateZ(0);
+    }
+
+    .stage{
+      margin-top: 22px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      align-items:center;
+    }
+    @media (max-width: 760px){
+      .stage{grid-template-columns: 1fr; gap: 14px}
+      body{overflow:auto}
+    }
+
+    .panel{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(10,12,22,.22);
+      border-radius: 18px;
+      padding: 18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .panel::after{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(700px 240px at 20% 10%, rgba(255,77,141,.18), transparent 60%),
+                  radial-gradient(560px 240px at 80% 30%, rgba(71,215,172,.12), transparent 60%);
+      pointer-events:none;
+    }
+
+    .question{
+      margin:0 0 12px;
+      font-size: 18px;
+      color: rgba(255,255,255,.88);
+    }
+
+    .buttons{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top: 10px;
+      position:relative;
+      z-index:1;
+      align-items:center;
+    }
+
+    button{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.92);
+      font-weight: 650;
+      letter-spacing: .2px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      cursor:pointer;
+      transition: transform .15s ease, filter .15s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      will-change: transform;
+    }
+    button:active{transform: scale(.98)}
+    button:focus{outline:none}
+
+    .yes{
+      background: linear-gradient(135deg, rgba(255,77,141,.95), rgba(255,122,89,.92));
+      border-color: rgba(255,255,255,.22);
+      box-shadow: 0 14px 40px rgba(255,77,141,.22);
+      transform: translateZ(0);
+    }
+    .yes:hover{filter: brightness(1.05)}
+    .no:hover{filter: brightness(1.07)}
+    .ghost{
+      background: rgba(255,255,255,.05);
+    }
+
+    .meter{
+      margin-top: 12px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      color: rgba(255,255,255,.70);
+      font-size: 13px;
+      position:relative;
+      z-index:1;
+    }
+    .bar{
+      flex:1;
+      height: 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+    }
+    .fill{
+      height:100%;
+      width: 12%;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(71,215,172,.95), rgba(255,77,141,.95));
+      transition: width .3s ease;
+    }
+
+    .art{
+      display:grid;
+      place-items:center;
+      min-height: 240px;
+    }
+    .bear{
+      width: 220px;
+      max-width: 76vw;
+      aspect-ratio: 1/1;
+      position:relative;
+      filter: drop-shadow(0 30px 60px rgba(0,0,0,.35));
+      transform: translateY(2px);
+    }
+    .bear .face{
+      position:absolute; inset: 14% 10% 12% 10%;
+      border-radius: 42% 42% 44% 44%;
+      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.22), transparent 35%),
+                  linear-gradient(160deg, rgba(255,225,210,.92), rgba(255,170,190,.78));
+      border:1px solid rgba(255,255,255,.22);
+    }
+    .bear .ear{
+      position:absolute;
+      width: 28%;
+      height: 28%;
+      border-radius: 50%;
+      background: linear-gradient(160deg, rgba(255,225,210,.92), rgba(255,170,190,.78));
+      border:1px solid rgba(255,255,255,.22);
+      top: 6%;
+    }
+    .bear .ear.left{left: 6%}
+    .bear .ear.right{right: 6%}
+    .bear .ear::after{
+      content:"";
+      position:absolute; inset: 22%;
+      border-radius: 50%;
+      background: rgba(255,255,255,.22);
+    }
+    .bear .snout{
+      position:absolute;
+      left: 28%;
+      right: 28%;
+      bottom: 22%;
+      height: 34%;
+      border-radius: 50%;
+      background: rgba(255,255,255,.35);
+      border:1px solid rgba(255,255,255,.20);
+      backdrop-filter: blur(6px);
+    }
+    .bear .nose{
+      position:absolute;
+      left: 44%;
+      top: 58%;
+      width: 12%;
+      height: 9%;
+      border-radius: 10px 10px 14px 14px;
+      background: rgba(22,16,25,.75);
+    }
+    .bear .mouth{
+      position:absolute;
+      left: 50%;
+      top: 66%;
+      width: 22%;
+      height: 18%;
+      border: 3px solid rgba(22,16,25,.55);
+      border-top: 0;
+      border-left: 0;
+      border-right: 0;
+      border-radius: 0 0 80px 80px;
+      transform: translateX(-50%);
+      opacity:.85;
+    }
+    .bear .eye{
+      position:absolute;
+      top: 38%;
+      width: 9%;
+      height: 9%;
+      border-radius: 50%;
+      background: rgba(22,16,25,.78);
+    }
+    .bear .eye.left{left: 32%}
+    .bear .eye.right{right: 32%}
+    .bear .eye::after{
+      content:"";
+      position:absolute;
+      width: 35%;
+      height: 35%;
+      border-radius: 50%;
+      background: rgba(255,255,255,.85);
+      top: 18%;
+      left: 22%;
+    }
+
+    .heartPillow{
+      position:absolute;
+      bottom: -2%;
+      left: 50%;
+      transform: translateX(-50%) rotate(-6deg);
+      width: 46%;
+      height: 40%;
+      color: rgba(255,77,141,.98);
+      opacity: .92;
+      animation: bob 2.6s ease-in-out infinite;
+    }
+    @keyframes bob{
+      0%,100%{transform: translateX(-50%) rotate(-6deg) translateY(0)}
+      50%{transform: translateX(-50%) rotate(-6deg) translateY(-6px)}
+    }
+
+    .footer{
+      margin-top: 16px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      color: rgba(255,255,255,.62);
+      font-size: 12px;
+      position:relative;
+      z-index:1;
+    }
+    .footer a{color: rgba(255,255,255,.78); text-decoration:none; border-bottom:1px dashed rgba(255,255,255,.25)}
+    .footer a:hover{color:#fff}
+
+    /* modal */
+    .overlay{
+      position:fixed; inset:0;
+      background: rgba(5,7,14,.62);
+      backdrop-filter: blur(10px);
+      display:none;
+      place-items:center;
+      padding: 22px;
+      z-index: 50;
+    }
+    .overlay.show{display:grid}
+    .modal{
+      width:min(660px, 100%);
+      border-radius: 22px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .modal::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: conic-gradient(from 220deg, rgba(71,215,172,.55), rgba(255,77,141,.55), rgba(255,122,89,.45), rgba(71,215,172,.55));
+      filter: blur(22px);
+      opacity:.28;
+      z-index:0;
+    }
+    .modal .content{
+      position:relative;
+      z-index:1;
+      padding: 22px;
+    }
+    .modal h2{
+      margin: 10px 0 10px;
+      font-size: clamp(22px, 3.4vw, 34px);
+      letter-spacing:-.4px;
+    }
+    .modal p{margin: 0 0 14px; color: var(--muted); line-height:1.55}
+    .chips{display:flex; flex-wrap:wrap; gap:10px; margin: 14px 0 18px}
+    .chip{
+      padding: 10px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.82);
+      font-size: 13px;
+      white-space:nowrap;
+    }
+    .modal .actions{display:flex; gap:10px; flex-wrap:wrap}
+    .close{
+      background: rgba(255,255,255,.06);
+    }
+
+    /* tiny confetti hearts */
+    .pop{
+      position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index: 60;
+    }
+    .pop .s{
+      position:absolute;
+      width:10px; height:10px;
+      transform: rotate(45deg);
+      opacity:0;
+      animation: burst 900ms ease-out forwards;
+    }
+    .pop .s::before,.pop .s::after{
+      content:"";
+      position:absolute;
+      width:10px; height:10px;
+      border-radius:50%;
+      background: currentColor;
+    }
+    .pop .s{background: currentColor; border-radius:2px}
+    .pop .s::before{left:-5px}
+    .pop .s::after{top:-5px}
+    @keyframes burst{
+      0%{transform: translate(var(--x0), var(--y0)) rotate(45deg) scale(.7); opacity:0}
+      10%{opacity:.9}
+      100%{transform: translate(var(--x1), var(--y1)) rotate(45deg) scale(1.2); opacity:0}
+    }
+
+    /* little "laugh" badge */
+    .laugh{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.80);
+      font-size: 13px;
+      position:relative;
+      z-index:1;
+      width: fit-content;
+      user-select:none;
+    }
+    .laugh b{color: rgba(255,255,255,.92)}
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+
+  <main class="wrap">
+    <section class="card" aria-label="Valentine kaart">
+      <div class="inner">
+        <header>
+          <div class="badge"><span class="dot"></span><span id="badgeText">Gecodeerde boodschap voor Julia</span></div>
+          <div class="badge" title="Tip: stuur dit als linkje"><span>💌</span><span>1 klik = 1 glimlach</span></div>
+        </header>
+
+        <h1 id="title">Julia… wil jij mijn Valentijn zijn? 💘</h1>
+        <p class="subtitle" id="subtitle">
+          Ik heb geprobeerd “nee” als optie te implementeren, maar mijn code is romantisch onbetrouwbaar.
+        </p>
+
+        <div class="stage">
+          <div class="panel">
+            <p class="question" id="question">Kies je antwoord (heel wetenschappelijk):</p>
+
+            <div class="buttons">
+              <button class="yes" id="yesBtn">Ja 💖</button>
+              <button class="no ghost" id="noBtn">Nee 🙃</button>
+            </div>
+
+            <div class="meter" aria-label="Romantiekmeter">
+              <span id="meterLabel">Romantiek</span>
+              <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="12">
+                <div class="fill" id="fill"></div>
+              </div>
+              <span id="meterPct">12%</span>
+            </div>
+
+            <div class="laugh" id="laughBox" aria-live="polite">
+              <span>😂</span><span>Laugh-meter: <b id="laughCount">0</b></span>
+            </div>
+
+            <div class="footer">
+              <span id="smallHint">Tip: “Nee” triggert… comedy + wiskunde.</span>
+              <span><a href="#" id="editHint">Tekst aanpassen</a></span>
+            </div>
+          </div>
+
+          <div class="panel art" aria-label="Illustratie">
+            <div class="bear" aria-hidden="true">
+              <div class="ear left"></div>
+              <div class="ear right"></div>
+              <div class="face"></div>
+              <div class="eye left"></div>
+              <div class="eye right"></div>
+              <div class="snout"></div>
+              <div class="nose"></div>
+              <div class="mouth"></div>
+
+              <svg class="heartPillow" viewBox="0 0 200 180" fill="currentColor">
+                <path d="M100 170s-70-44-86-86C2 55 18 26 45 18c19-6 40 2 55 18c15-16 36-24 55-18c27 8 43 37 31 66c-16 42-86 86-86 86z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="content">
+        <div class="badge"><span class="dot"></span><span id="modalBadge">Julia heeft “Ja” gekozen.</span></div>
+        <h2 id="modalTitle">Deal. 14 februari is van ons. 💘</h2>
+        <p id="modalText">
+          Plan voor 14 februari: we gaan uit eten en daarna kruipen we samen onder één dekentje (en ja… samen slapen). 🥂🛏️
+        </p>
+
+        <div class="chips" id="chips">
+          <span class="chip">📅 14 februari</span>
+          <span class="chip">🍽️ Uit eten (jij kiest of ik verras)</span>
+          <span class="chip">🥂 Toast op “wij”</span>
+          <span class="chip">🛏️ Samen slapen</span>
+        </div>
+
+        <div class="actions">
+          <button class="yes" id="copyBtn">Kopieer een lief bericht</button>
+          <button class="close" id="closeBtn">Sluiten</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pop" id="pop"></div>
+
+  <script>
+    // ======= Personalize here (ONE place) =======
+    const PERSONAL = {
+      name: "Julia",
+      from: "Mo",
+      title: "Julia… wil jij mijn Valentijn zijn? 💘",
+      subtitle: "Ik heb geprobeerd “nee” als optie te implementeren, maar mijn code is romantisch onbetrouwbaar.",
+      question: "Kies je antwoord (heel wetenschappelijk):",
+      yesLabel: "Ja 💖",
+      noLabel: "Nee 🙃",
+
+      // Every "No" should trigger a laugh vibe
+      noLines: [
+        "Nee? Dat is dapper. En ook… verdacht. 😌",
+        "Ik noteer dit als: ‘Julia doet stoer’.",
+        "Oké maar… je glimlacht nu toch? 😏",
+        "De Nee-knop begint te twijfelen aan z’n carrièrekeuze.",
+        "Ik heb een bug gevonden: jij + ik = te cute om ‘nee’ te zijn.",
+        "Je klikt ‘Nee’ alsof je niet stiekem wil lachen. 🫣",
+        "Plot twist: elke ‘Nee’ maakt de ‘Ja’ groter. Net als mijn crush.",
+        "Julia… ik ben een man met een missie en slecht schrijfwerk in JavaScript.",
+        "De Nee-knop is nu officieel ‘onderhandelingen’.",
+        "Laatste kans: zeg ‘Ja’ en ik gedraag me (een beetje). 😇"
+      ],
+
+      acceptedModalTitle: "Deal. 14 februari is van ons. 💘",
+      acceptedModalText: "Plan voor 14 februari: we gaan uit eten en daarna kruipen we samen onder één dekentje (en ja… samen slapen). 🥂🛏️",
+      copyMessage: "Julia, je hebt ‘Ja’ gezegd 🥹💘. 14 februari: uit eten + samen slapen. Wanneer ben je vrij? — Mo",
+      editHint: "Tekst aanpassen"
+    };
+
+    // ======= DOM =======
+    const titleEl = document.getElementById("title");
+    const subtitleEl = document.getElementById("subtitle");
+    const questionEl = document.getElementById("question");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const badgeText = document.getElementById("badgeText");
+    const editHint = document.getElementById("editHint");
+
+    const overlay = document.getElementById("overlay");
+    const closeBtn = document.getElementById("closeBtn");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalText = document.getElementById("modalText");
+    const modalBadge = document.getElementById("modalBadge");
+    const copyBtn = document.getElementById("copyBtn");
+
+    const fill = document.getElementById("fill");
+    const meterPct = document.getElementById("meterPct");
+    const bar = document.querySelector(".bar");
+    const pop = document.getElementById("pop");
+
+    const laughCountEl = document.getElementById("laughCount");
+
+    // ======= init text =======
+    titleEl.textContent = PERSONAL.title;
+    subtitleEl.textContent = PERSONAL.subtitle;
+    questionEl.textContent = PERSONAL.question;
+    yesBtn.textContent = PERSONAL.yesLabel;
+    noBtn.textContent = PERSONAL.noLabel;
+    badgeText.textContent = `Gecodeerde boodschap voor ${PERSONAL.name}`;
+    editHint.textContent = PERSONAL.editHint;
+
+    modalTitle.textContent = PERSONAL.acceptedModalTitle;
+    modalText.textContent = PERSONAL.acceptedModalText;
+    modalBadge.textContent = `${PERSONAL.name} heeft “Ja” gekozen.`;
+
+    // ======= hearts background =======
+    const hearts = document.getElementById("hearts");
+    const colors = ["#ff4d8d", "#ff7a59", "#47d7ac", "rgba(255,255,255,.8)"];
+    const rand = (a,b)=> Math.random()*(b-a)+a;
+
+    function spawnHearts(){
+      const count = 22;
+      for(let i=0;i<count;i++){
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.style.left = rand(0,100) + "vw";
+        h.style.bottom = rand(-10,30) + "vh";
+        h.style.color = colors[Math.floor(Math.random()*colors.length)];
+        h.style.setProperty("--drift", rand(-12,12) + "vw");
+        h.style.setProperty("--s", rand(.8, 1.6));
+        h.style.animationDuration = rand(7, 15) + "s";
+        h.style.animationDelay = rand(0, 6) + "s";
+        hearts.appendChild(h);
+      }
+    }
+    spawnHearts();
+
+    // ======= confetti hearts =======
+    function burstHearts(atX = window.innerWidth/2, atY = window.innerHeight/2){
+      const n = 26;
+      for(let i=0;i<n;i++){
+        const s = document.createElement("div");
+        s.className = "s";
+        const c = colors[Math.floor(Math.random()*3)];
+        s.style.color = c;
+
+        const a = (Math.PI * 2) * (i/n);
+        const r = rand(90, 210);
+        s.style.setProperty("--x0", (atX + rand(-10,10)) + "px");
+        s.style.setProperty("--y0", (atY + rand(-10,10)) + "px");
+        s.style.setProperty("--x1", (atX + Math.cos(a)*r) + "px");
+        s.style.setProperty("--y1", (atY + Math.sin(a)*r) + "px");
+
+        pop.appendChild(s);
+        setTimeout(()=> s.remove(), 1000);
+      }
+    }
+
+    // ======= laugh effect =======
+    let laughCount = 0;
+    function makeHerLaugh(){
+      laughCount++;
+      laughCountEl.textContent = String(laughCount);
+
+      // haptic feedback on mobile
+      if (navigator.vibrate) navigator.vibrate([20, 30, 20]);
+
+      // subtitle wiggle
+      subtitleEl.animate(
+        [
+          { transform: "translateX(0)" },
+          { transform: "translateX(-6px)" },
+          { transform: "translateX(6px)" },
+          { transform: "translateX(-4px)" },
+          { transform: "translateX(4px)" },
+          { transform: "translateX(0)" }
+        ],
+        { duration: 420, easing: "ease-out" }
+      );
+
+      // small burst near buttons for extra “hehe”
+      const rect = document.querySelector(".buttons").getBoundingClientRect();
+      burstHearts(rect.left + rect.width*0.6, rect.top + rect.height*0.2);
+    }
+
+    // ======= romance meter =======
+    let noClicks = 0;
+    let romance = 12;
+
+    function setRomance(pct){
+      romance = Math.max(0, Math.min(100, pct));
+      fill.style.width = romance + "%";
+      meterPct.textContent = romance + "%";
+      bar.setAttribute("aria-valuenow", romance);
+    }
+
+    // ======= "No" behavior (funny + dodge later) =======
+    function moveNoButton(){
+      const rect = noBtn.getBoundingClientRect();
+      const maxX = Math.min(window.innerWidth - rect.width - 22, rect.left + rand(-180, 180));
+      const maxY = Math.min(window.innerHeight - rect.height - 22, rect.top + rand(-140, 140));
+      const x = Math.max(22, maxX);
+      const y = Math.max(22, maxY);
+
+      noBtn.style.position = "fixed";
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+      noBtn.style.zIndex = 40;
+    }
+
+    noBtn.addEventListener("click", () => {
+      noClicks++;
+      const line = PERSONAL.noLines[Math.min(noClicks-1, PERSONAL.noLines.length-1)];
+      subtitleEl.textContent = line;
+
+      // Yes grows every "No"
+      const scale = 1 + Math.min(noClicks * 0.10, 1.0);
+      yesBtn.style.transform = `scale(${scale})`;
+
+      // Romance rises
+      setRomance(12 + Math.min(noClicks * 10, 78));
+
+      // After 3 clicks, "No" starts dodging a bit
+      if(noClicks >= 3){
+        moveNoButton();
+      }
+
+      // After 6 clicks, it becomes very hard to click "No"
+      if(noClicks >= 6){
+        noBtn.addEventListener("mouseenter", moveNoButton, { once:false });
+        noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); moveNoButton(); }, { passive:false });
+      }
+
+      // Make her laugh every time
+      makeHerLaugh();
+    });
+
+    // ======= YES flow =======
+    function openModal(){
+      overlay.classList.add("show");
+
+      // Make it feel extra romantic on "Yes"
+      titleEl.textContent = `${PERSONAL.name}… je hebt net mijn dag gemaakt. 💘`;
+      burstHearts();
+
+      setRomance(100);
+
+      // Reset moved "No" button (so it doesn't haunt the screen)
+      noBtn.style.position = "";
+      noBtn.style.left = "";
+      noBtn.style.top = "";
+      noBtn.style.zIndex = "";
+      noBtn.removeEventListener("mouseenter", moveNoButton);
+    }
+
+    yesBtn.addEventListener("click", openModal);
+
+    closeBtn.addEventListener("click", () => overlay.classList.remove("show"));
+    overlay.addEventListener("click", (e) => {
+      if(e.target === overlay) overlay.classList.remove("show");
+    });
+    document.addEventListener("keydown", (e)=>{
+      if(e.key === "Escape") overlay.classList.remove("show");
+    });
+
+    copyBtn.addEventListener("click", async ()=>{
+      const msg = PERSONAL.copyMessage;
+      try{
+        await navigator.clipboard.writeText(msg);
+        copyBtn.textContent = "Gekopieerd ✅";
+        setTimeout(()=> copyBtn.textContent = "Kopieer een lief bericht", 1600);
+      }catch{
+        window.prompt("Kopieer dit bericht:", msg);
+      }
+    });
+
+    // Tiny helper: how to edit hint
+    editHint.addEventListener("click", (e)=>{
+      e.preventDefault();
+      const tip =
+`Pas bovenaan in de JS de PERSONAL velden aan (naam, tekst, bericht).
+Zo maak je ’m helemaal eigen.
+
+Zoek naar: const PERSONAL = { ... }`;
+      window.alert(tip);
+    });
+  </script>
+</body>
+</html>
